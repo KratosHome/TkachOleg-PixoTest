@@ -30,6 +30,7 @@ const CardForm = () => {
 
   return (
     <form
+      noValidate
       className="mt-8 max-w-md mx-auto space-y-4 w-full"
       onSubmit={handleSubmit(onSubmit)}
     >

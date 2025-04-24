@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -13,7 +13,10 @@ vi.mock("react-router", () => ({
   useNavigate: () => navigateMock,
 }));
 
-const renderWithProviders = (ui: React.ReactElement, initialItems = []) => {
+const renderWithProviders = (
+  ui: React.ReactElement,
+  initialItems: CartItem[] = [],
+) => {
   const store = configureStore({
     reducer: { cart: cartReducer },
     preloadedState: {
@@ -30,26 +33,39 @@ const renderWithProviders = (ui: React.ReactElement, initialItems = []) => {
 
 describe("CardForm", () => {
   beforeEach(() => {
+    cleanup();
     navigateMock.mockClear();
   });
 
   it("renders form inputs and submits correctly", async () => {
     renderWithProviders(<CardForm />, [
-      { id: 1, title: "Test Item", price: 10, quantity: 1 },
+      {
+        id: 1,
+        title: "Test Item",
+        price: 10,
+        quantity: 1,
+        category: "electronics",
+        image: "https://via.placeholder.com/150",
+        description: "Test description",
+        rating: { rate: 4.5, count: 100 },
+      },
     ]);
 
-    await userEvent.type(screen.getByPlaceholderText("Ваше імʼя"), "Олег");
     await userEvent.type(
-      screen.getByPlaceholderText("Адреса доставки"),
+      screen.getAllByPlaceholderText("Ваше імʼя")[0],
+      "Олег",
+    );
+    await userEvent.type(
+      screen.getAllByPlaceholderText("Адреса доставки")[0],
       "Київ, Україна",
     );
     await userEvent.type(
-      screen.getByPlaceholderText("Email"),
+      screen.getAllByPlaceholderText("Email")[0],
       "oleg@example.com",
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: /Оформити замовлення/i }),
+      screen.getAllByRole("button", { name: /Оформити замовлення/i })[0],
     );
 
     expect(screen.queryByText(/обовʼязкове/i)).toBeNull();
@@ -60,7 +76,7 @@ describe("CardForm", () => {
     renderWithProviders(<CardForm />);
 
     await userEvent.click(
-      screen.getByRole("button", { name: /Оформити замовлення/i }),
+      screen.getAllByRole("button", { name: /Оформити замовлення/i })[0],
     );
 
     expect(await screen.findByText("Імʼя обовʼязкове")).not.toBeNull();
