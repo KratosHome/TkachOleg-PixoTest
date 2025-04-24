@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface PriceRange {
+interface IPriceRange {
   min: number;
   max: number;
 }
@@ -9,7 +9,7 @@ interface IProductsState {
   filteredProducts: IProduct[];
   categories: string[];
   selectedCategory: string;
-  priceRange: PriceRange;
+  priceRange: IPriceRange;
   sort: string;
 }
 
@@ -28,7 +28,7 @@ const productsSlice = createSlice({
     setSelectedCategory(state, action: PayloadAction<string>) {
       state.selectedCategory = action.payload === "all" ? "" : action.payload;
     },
-    setPriceRange(state, action: PayloadAction<PriceRange>) {
+    setPriceRange(state, action: PayloadAction<IPriceRange>) {
       state.priceRange = action.payload;
     },
     setSort(state, action: PayloadAction<string>) {

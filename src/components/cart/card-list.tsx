@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { useDispatch } from "react-redux";
 import { removeItem, updateQuantity } from "@/store/cart-slice.ts";
 
-interface CartItemProps {
+interface ICartItemProps {
   id: number;
   title: string;
   image: string;
@@ -18,7 +18,7 @@ interface CartItemProps {
   quantity: number;
 }
 
-const CardList: React.FC<CartItemProps> = ({
+const CardList: React.FC<ICartItemProps> = ({
   id,
   title,
   image,

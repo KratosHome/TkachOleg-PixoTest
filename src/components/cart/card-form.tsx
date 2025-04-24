@@ -7,7 +7,7 @@ import { RootState } from "@/store/store.ts";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 
-interface CheckoutFormData {
+interface ICheckoutFormData {
   name: string;
   address: string;
   email: string;
@@ -18,10 +18,10 @@ const CardForm = () => {
   const dispatch = useDispatch();
 
   const items = useSelector((state: RootState) => state.cart.items);
-  const { register, handleSubmit, formState } = useForm<CheckoutFormData>();
+  const { register, handleSubmit, formState } = useForm<ICheckoutFormData>();
   const { errors } = formState;
 
-  const onSubmit = (data: CheckoutFormData) => {
+  const onSubmit = (data: ICheckoutFormData) => {
     console.log("Checkout Data:", data);
     console.log("Cart Items:", items);
     dispatch(clearCart());
