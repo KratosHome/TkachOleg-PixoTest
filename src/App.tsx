@@ -8,6 +8,7 @@ import NotFound from "@/pages/not-found.tsx";
 import { Provider } from "react-redux";
 import { store } from "@/store/store.ts";
 import Cart from "@/pages/cart.tsx";
+import { ROUTES } from "@/constants/paths.ts";
 
 function App() {
   return (
@@ -16,10 +17,10 @@ function App() {
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <Header />
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path={ROUTES.HOME} element={<Home />} />
+            <Route path={ROUTES.PRODUCT_DETAILS} element={<ProductDetails />} />
+            <Route path={ROUTES.CART} element={<Cart />} />
+            <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
           </Routes>
         </ThemeProvider>
       </Provider>

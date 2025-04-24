@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "@/store/store";
 import {
-  fetchProducts,
   setPriceRange,
   setSelectedCategory,
   setSort,
@@ -20,30 +19,22 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { useGetProductsQuery } from "@/api/products-api.ts";
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const {
-    filteredProducts,
-    categories,
-    selectedCategory,
-    priceRange,
-    sort,
-    isLoading,
-    products,
-  } = useSelector((state: RootState) => state.products);
+  const { data: products, isLoading } = useGetProductsQuery();
+
+  const { filteredProducts, categories, selectedCategory, priceRange, sort } =
+    useSelector((state: RootState) => state.products);
 
   const [view, setView] = useState("grid");
 
   useEffect(() => {
-    if (products.length === 0) {
-      dispatch(fetchProducts());
+    if (products) {
+      dispatch(filterAndSortProducts(products));
     }
-  }, [dispatch, products.length]);
-
-  useEffect(() => {
-    dispatch(filterAndSortProducts());
-  }, [selectedCategory, priceRange, sort, dispatch]);
+  }, [products, selectedCategory, priceRange, sort, dispatch]);
 
   if (isLoading) {
     return (

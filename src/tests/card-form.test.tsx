@@ -15,7 +15,7 @@ vi.mock("react-router", () => ({
 
 const renderWithProviders = (
   ui: React.ReactElement,
-  initialItems: CartItem[] = [],
+  initialItems: ICartItem[] = [],
 ) => {
   const store = configureStore({
     reducer: { cart: cartReducer },

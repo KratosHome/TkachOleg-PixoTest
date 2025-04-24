@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge.tsx";
 import { ThemeToggle } from "@/components/common/theme-toggle.tsx";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store.ts";
+import { ROUTES } from "@/constants/paths.ts";
 
 const Header = () => {
   const cartItemCount = useSelector((state: RootState) =>
@@ -13,14 +14,14 @@ const Header = () => {
 
   return (
     <header className="w-full container mx-auto px-4 md:px-8 py-4 shadow-sm bg-white dark:bg-black flex justify-between items-center">
-      <Link to="/" className="text-xl font-bold">
+      <Link to={ROUTES.HOME} className="text-xl font-bold">
         Лого
       </Link>
 
       <div className="flex items-center gap-5">
         <ThemeToggle />
 
-        <Link to="/cart" className="relative">
+        <Link to={ROUTES.CART} className="relative">
           <Button
             variant="ghost"
             size="icon"

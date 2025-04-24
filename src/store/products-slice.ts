@@ -1,56 +1,41 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_BASE_URL;
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface PriceRange {
   min: number;
   max: number;
 }
 
-interface ProductsState {
-  products: IProduct[];
+interface IProductsState {
   filteredProducts: IProduct[];
   categories: string[];
   selectedCategory: string;
   priceRange: PriceRange;
   sort: string;
-  isLoading: boolean;
 }
 
-const initialState: ProductsState = {
-  products: [],
+const initialState: IProductsState = {
   filteredProducts: [],
   categories: [],
   selectedCategory: "",
   priceRange: { min: 0, max: 1000 },
   sort: "",
-  isLoading: false,
 };
-
-export const fetchProducts = createAsyncThunk(
-  "products/fetchProducts",
-  async () => {
-    const response = await axios.get<IProduct[]>(`${API_URL}/products`);
-    return response.data;
-  },
-);
 
 const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    setSelectedCategory(state, action) {
+    setSelectedCategory(state, action: PayloadAction<string>) {
       state.selectedCategory = action.payload === "all" ? "" : action.payload;
     },
-    setPriceRange(state, action) {
+    setPriceRange(state, action: PayloadAction<PriceRange>) {
       state.priceRange = action.payload;
     },
-    setSort(state, action) {
+    setSort(state, action: PayloadAction<string>) {
       state.sort = action.payload;
     },
-    filterAndSortProducts(state) {
-      let result = [...state.products];
+    filterAndSortProducts(state, action: PayloadAction<IProduct[]>) {
+      let result = [...action.payload];
 
       if (state.selectedCategory) {
         result = result.filter((p) => p.category === state.selectedCategory);
@@ -68,24 +53,10 @@ const productsSlice = createSlice({
         result.sort((a, b) => b.rating.rate - a.rating.rate);
 
       state.filteredProducts = result;
+      state.categories = Array.from(
+        new Set(action.payload.map((p) => p.category)),
+      );
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchProducts.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.products = action.payload;
-        state.filteredProducts = action.payload;
-        state.categories = Array.from(
-          new Set(action.payload.map((p) => p.category)),
-        );
-        state.isLoading = false;
-      })
-      .addCase(fetchProducts.rejected, (state) => {
-        state.isLoading = false;
-      });
   },
 });
 

@@ -1,29 +1,43 @@
-import { configureStore } from "@reduxjs/toolkit";
-import cartReducer from "./cart-slice.ts";
-import productReducer from "./products-slice.ts";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import cartReducer from "./cart-slice";
+import productsReducer from "./products-slice";
+import { productsApi } from "../api/products-api.ts";
 
-const loadStorage = (key: string) => {
-  const raw = localStorage.getItem(key);
-  return raw ? JSON.parse(raw) : undefined;
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+
+import storage from "redux-persist/lib/storage";
+
+const cartPersistConfig = {
+  key: "cart",
+  storage,
 };
 
-const saveStorage = <T>(key: string, value: T): void => {
-  localStorage.setItem(key, JSON.stringify(value));
-};
-
-export const store = configureStore({
-  reducer: {
-    cart: cartReducer,
-    products: productReducer,
-  },
-  preloadedState: {
-    cart: loadStorage("cartState"),
-  },
+const rootReducer = combineReducers({
+  cart: persistReducer(cartPersistConfig, cartReducer),
+  products: productsReducer,
+  [productsApi.reducerPath]: productsApi.reducer,
 });
 
-store.subscribe(() => saveStorage("cartState", store.getState().cart));
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(productsApi.middleware),
+});
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
+export const persistor = persistStore(store);
+
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;

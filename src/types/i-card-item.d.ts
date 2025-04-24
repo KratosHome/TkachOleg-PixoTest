@@ -1,3 +1,3 @@
-interface CartItem extends IProduct {
+interface ICartItem extends IProduct {
   quantity: number;
 }

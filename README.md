@@ -1,4 +1,4 @@
-# TkachOleh-PixoTest
+# TkachOleg-PixoTest
 
 This is a product showcase implemented using React, Redux Toolkit, TailwindCSS, and Radix UI. The app allows users to view products in grid or list layout, filter them by categories and price, sort them, view detailed information, and manage the shopping cart.
 
