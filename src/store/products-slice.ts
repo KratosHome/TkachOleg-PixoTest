@@ -15,6 +15,7 @@ interface ProductsState {
   selectedCategory: string;
   priceRange: PriceRange;
   sort: string;
+  isLoading: boolean;
 }
 
 const initialState: ProductsState = {
@@ -24,6 +25,7 @@ const initialState: ProductsState = {
   selectedCategory: "",
   priceRange: { min: 0, max: 1000 },
   sort: "",
+  isLoading: false,
 };
 
 export const fetchProducts = createAsyncThunk(
@@ -69,13 +71,21 @@ const productsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchProducts.fulfilled, (state, action) => {
-      state.products = action.payload;
-      state.filteredProducts = action.payload;
-      state.categories = Array.from(
-        new Set(action.payload.map((p) => p.category)),
-      );
-    });
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.products = action.payload;
+        state.filteredProducts = action.payload;
+        state.categories = Array.from(
+          new Set(action.payload.map((p) => p.category)),
+        );
+        state.isLoading = false;
+      })
+      .addCase(fetchProducts.rejected, (state) => {
+        state.isLoading = false;
+      });
   },
 });
 

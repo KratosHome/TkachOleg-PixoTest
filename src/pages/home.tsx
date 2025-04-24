@@ -19,21 +19,41 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@radix-ui/react-dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { filteredProducts, categories, selectedCategory, priceRange, sort } =
-    useSelector((state: RootState) => state.products);
+  const {
+    filteredProducts,
+    categories,
+    selectedCategory,
+    priceRange,
+    sort,
+    isLoading,
+    products,
+  } = useSelector((state: RootState) => state.products);
 
   const [view, setView] = useState("grid");
 
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+    if (products.length === 0) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, products.length]);
 
   useEffect(() => {
     dispatch(filterAndSortProducts());
   }, [selectedCategory, priceRange, sort, dispatch]);
+
+  if (isLoading) {
+    return (
+      <div className="p-4 border rounded-md shadow">
+        <Skeleton className="h-48 w-full mb-4" />
+        <Skeleton className="h-4 w-3/4 mb-2" />
+        <Skeleton className="h-4 w-1/2" />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4">

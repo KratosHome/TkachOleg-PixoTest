@@ -1,40 +1,39 @@
 # TkachOleh-PixoTest
 
-Це продуктова вітрина, реалізована з використанням React, Redux Toolkit, TailwindCSS та Radix UI. Додаток дозволяє переглядати товари у вигляді сітки або списку, фільтрувати за категоріями й ціною, сортувати, переглядати детальну інформацію та керувати кошиком.
+This is a product showcase implemented using React, Redux Toolkit, TailwindCSS, and Radix UI. The app allows users to view products in grid or list layout, filter them by categories and price, sort them, view detailed information, and manage the shopping cart.
 
-## 🔧 Стек технологій
+## 🔧 Tech Stack
 
-###  React + TypeScript + Vite
+### React + TypeScript + Vite
 
-- **Vite** — швидший за CRA, забезпечує миттєвий старт, кращу підтримку сучасних інструментів та гнучку конфігурацію
-- **React 19** — для побудови динамічного UI
-- **Redux Toolkit** — ефективне керування глобальним станом
-- **React Router 7** — маршрутизація сторінок
-- **Tailwind CSS 4** + **shadcn/ui (Radix UI)** — адаптивний та сучасний дизайн
-- **Shadcn/UI (на базі Radix UI)** — набір готових доступних компонентів
-- **React Hook Form** — проста і зручна валідація форм
-- **TypeScript** — типобезпека та підвищена підтримка IDE
-- **Axios** — для запитів до API
-- **Vite** — надшвидкий дев-сервер та збірка
-- **ESLint + Prettier** — контроль якості коду
+- **Vite** — faster than CRA, provides instant startup, better support for modern tools, and flexible configuration
+- **React 19** — used for building a dynamic UI
+- **Redux Toolkit** — efficient global state management
+- **React Router 7** — page routing
+- **Tailwind CSS 4** + **shadcn/ui (Radix UI)** — responsive and modern design
+- **Shadcn/UI (based on Radix UI)** — a set of accessible prebuilt components
+- **React Hook Form** — simple and convenient form validation
+- **TypeScript** — type safety and enhanced IDE support
+- **Axios** — for making API requests
+- **ESLint + Prettier** — code quality control
 
-## 🚀 Запуск проєкту
+## 🚀 Project Setup
 
-### Вимоги:
-- Node.js `>=18`
-- Yarn або npm
+### Requirements:
+- Node.js >=18
+- Yarn
 
-### Інструкція:
+### Instructions:
 
 ```bash
-# Встановлення залежностей
+# Install dependencies
 yarn install
 
-# Запуск у режимі розробки
+# Start in development mode
 yarn dev
 
-# Збірка
+# Build for production
 yarn build
 
-# Перегляд зібраного проєкту
+# Preview the production build
 yarn preview
